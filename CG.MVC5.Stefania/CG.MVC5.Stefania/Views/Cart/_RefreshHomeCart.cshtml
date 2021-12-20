@@ -1,0 +1,82 @@
+﻿@using CG.MVC5.Stefania.Models
+@model ShoppingCart
+@if (Model.Products.Count() > 0)
+{
+foreach (ProductE product in Model.Products)
+{
+    <div class="row productOfCart mx-auto">
+        <div class="col-md-4 col-12 text-center">
+            <div id="imageCart"><img src="~/Content/Images/@product.Id/@product.Image1_string" /></div>
+        </div>
+        
+        <div class="col-md-4 col-12 dots my-auto text-center">
+            <b>@product.Name</b>
+            <div class="dots mt-3 mb-4">
+                @product.Description<br />
+                Price: @product.Price €<br />
+            </div>
+        </div>
+        <div class="col-md-2 col-12  text-center my-auto">
+            <b>Quantity</b>
+            <div class="mt-3 mb-md-5 mb-3">
+               @Ajax.ActionLink(
+                         " ",
+                         "IncreaseDecreaseProductFromCart",
+                         "Cart",
+                         new { id = product.Id, quantity = -1, isHomeCart = true },
+                         new AjaxOptions
+                         {
+                             UpdateTargetId = "rowShoppingCart",
+                             InsertionMode = InsertionMode.Replace,
+                             OnComplete = "onCompleteDeleteCart",
+                             HttpMethod = "POST"
+                         },
+                         new { @class = "fa fa-minus-square" })
+            @product.Quantity
+            @Ajax.ActionLink(
+                 " ",
+                 "IncreaseDecreaseProductFromCart",
+                 "Cart",
+                 new { id = product.Id, quantity = 1, isHomeCart = true },
+                 new AjaxOptions
+                 {
+                     UpdateTargetId = "rowShoppingCart",
+                     InsertionMode = InsertionMode.Replace,
+                     OnComplete = "onCompleteAddCart",
+                     HttpMethod = "POST"
+                 },
+                 new { @class = "fa fa-plus-square" })
+            </div>
+        </div>
+        <div class="col-md-2 col-12 text-center my-md-auto mb-2">
+                @Ajax.ActionLink(
+                 "Delete",
+                 "DeleteProductFromCart",
+                 "Cart",
+                 new { id = product.Id, isHomeCart = true },
+                 new AjaxOptions
+                 {
+                     UpdateTargetId = "rowShoppingCart",
+                     InsertionMode = InsertionMode.Replace,
+                     OnComplete = "onCompleteDeleteCart",
+                     HttpMethod = "POST"
+                 },
+                 new { @class = "btn btn-danger text-white" })
+        </div>
+
+    </div>
+
+
+}
+<div class="col-6 text-center">Total Price : @Model.Total €</div>
+<div class="col-6 text-center"><a class="btn btn-primary" href="@Url.Action("Checkout", "Cart")">Checkout</a></div>
+}
+else
+{
+    <div class="row mx-auto">
+        <div class="col-12 text-white text-center">
+            <h1><p class="mt-1">Shopping cart is empty</p></h1>
+            <p class="mt-2">If you want to see full product list <a href="@Url.Action("Index","Home")">click here!</a></p>
+        </div>
+    </div>
+}

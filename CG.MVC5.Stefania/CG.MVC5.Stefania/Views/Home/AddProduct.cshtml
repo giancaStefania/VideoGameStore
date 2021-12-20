@@ -1,0 +1,161 @@
+﻿@using CG.MVC5.Stefania.Models
+@model ProductE
+@{
+    ViewBag.Title = "AddProduct";
+}
+
+<div class="container" id="customContainer">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center titleOfPage">
+            Add New Product
+        </div>
+    </div>
+    <form id="formProduct" class="customForm" action="@Url.Action("AddProduct", "Home")" method="post" enctype="multipart/form-data">
+        <div class="divForm myForm">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 ">
+                    <div class="form-group">
+                        <label for="inputTitle">Title</label>
+                        <input id="inputTitle" class="form-control inputShadow" name="Name" type="text" placeholder="Title of product" />
+                        <label id="validationTitle" class="text-danger hiddenLabel">The price must be not empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="form-group">
+                        <label>Price</label>
+                        <div>
+                            <input id="price" class="w-100 form-control inputShadow" type="number" name="Price" min="0" value="0" step=".01" />
+                        </div>
+                        <label id="validationPrice" class="text-danger hiddenLabel">The price must not be empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="inputFileImage">Upload Image</label>
+                        <div id="rowImage" class="row justify-content-center align-items-center text-center productForm">
+                            <div id="img1" class="col-lg-4 col-md-4 col-sm-12 col-12 ">
+                                <i class="fa fa-close" onclick="clickFaClose(this)" title="Remove Image"></i>
+                                <div class="m-auto inputShadow" id="spanFile"><img src="~/Content/Images/image_placeholder.png" /></div>
+                                <button id="buttonImage1" type="button" class="btn btn-primary inputShadow">Choose your image</button>
+                                <input class="hideInputFile" type="file" id="inputFileImage1" accept="image/png,image/jpeg" name="Image1_file" />
+                            </div>
+                            <div id="img2" class="col-lg-4 col-md-4 col-sm-12 col-12 justify-content-center">
+                                <i class="fa fa-close" onclick="clickFaClose(this)" title="Remove Image"></i>
+                                <div class="m-auto inputShadow" id="spanFile"><img src="~/Content/Images/image_placeholder.png" /></div>
+                                <button id="buttonImage2" type="button" class="btn btn-primary inputShadow">Choose your image</button>
+                                <input class="hideInputFile" type="file" id="inputFileImage2" accept="image/png,image/jpeg" name="Image2_file" />
+                            </div>
+                            <div id="img3" class="col-lg-4 col-md-4 col-sm-12 col-12 justify-content-center">
+                                <i class="fa fa-close" onclick="clickFaClose(this)" title="Remove Image"></i>
+                                <div class="m-auto inputShadow" id="spanFile"><img src="~/Content/Images/image_placeholder.png" /></div>
+                                <button id="buttonImage3" type="button" class="btn btn-primary inputShadow">Choose your image</button>
+                                <input class="hideInputFile" type="file" id="inputFileImage3" accept="image/png,image/jpeg" name="Image3_file" />
+                            </div>
+
+                        </div>
+                        <label id="validationImage" class="text-danger hiddenLabel">The product must contain at least one image</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Image1_file, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <div>
+                            <select class="w-100 form-control inputShadow" id="category" name="Category">
+                                @{Html.RenderAction("GetCategories", "Home");}
+                            </select>
+                        </div>
+                        <label id="validationCategory" class="text-danger hiddenLabel">Category must not be empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <div>
+                            <input id="quantity" class="w-100 form-control inputShadow" type="number" name="Quantity" min="0" value="0" step="1" />
+                        </div>
+                        <label id="validationQuantity" class="text-danger hiddenLabel">The quantity must not be empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <div>
+                            <select class="w-100 form-control inputShadow" id="stock" name="Stock">
+                                @{Html.RenderAction("GetStock", "Home");}
+                            </select>
+                        </div>
+                        <label id="validationStock" class="text-danger hiddenLabel">Stock must not be empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Stock, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div id="consoleDiv" class="form-group">
+                        <label>
+                            Platform  <a class="text-white cursorPointer" data-toggle="modal" data-target="#platform"><i class="fa fa-plus-square"></i></a>
+                                          @Ajax.ActionLink(
+                                                 " ",
+                                                 "GetPlatform",
+                                                 "Home",
+                                                 new {isPrincipal = false},
+                                                 new AjaxOptions
+                                                 {
+                                                     UpdateTargetId = "namePlatformSelect",
+                                                     InsertionMode = InsertionMode.Replace,
+                                                     HttpMethod = "POST"
+                                                 },
+                                                new
+                                                {
+                                                    @class = "fa fa-minus-square text-white",
+                                                    data_toggle = "modal",
+                                                    data_target = "#platformDelete",
+                                                    @id ="deletePlatform"
+                                                })
+                        </label>
+                        <div>
+                            <select class="w-100 form-control inputShadow" id="platformList" name="Platform">
+                                @{Html.RenderAction("GetPlatform", "Home");}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="textOfProduct">Description</label>
+                        <div>
+                            <textarea class="w-100 form-control inputShadow" id="textOfProduct" rows="10" cols="30" name="Description" placeholder="Insert description of your product"></textarea>
+                        </div>
+                        <label id="validationDescription" class="text-danger hiddenLabel">Description must not be empty</label>
+                        <br />
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-12 col-sm-12 col-12">
+                    <button id="buttonProduct" type="submit" class="btn btn-primary w-100">Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+@{Html.RenderPartial("_PlatformModal", DBOperation.GetPlatform());}
+
+    @section Scripts{
+    <script src="~/Scripts/addProductScript.js"></script>
+}
+

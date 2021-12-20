@@ -1,0 +1,406 @@
+﻿@using CG.MVC5.Stefania.Models
+@model List<ProductE>
+
+@{
+    ViewBag.Title = "Index";
+    List<Category> categories = DBOperation.GetCategories();
+    List<string> platforms = DBOperation.GetPlatform();
+}
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 titleOfPage text-white">
+            Product's List
+        </div>
+    </div>
+    <div id="productSearch" class="row">
+        <div class="col-lg-6 col-md-6 col-12">
+            @if (Session["role"] != null && (string)Session["role"] == "admin")
+            {
+                <div class="row">
+                    <div class="col-4">
+                        <a id="newProduct" class="btn btn-primary ml-auto w-100" href="@Url.Action("AddProduct", "Home")">Add Product</a>
+                    </div>
+                    <div class="col-4">
+                        <div id="filterDrop" class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filter
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownFilter">
+                                <div class="dropdown-submenu">
+                                    <a class="btn dropdown-toggle dropdown-item" data-toggle="dropdown" id="dropdownCategories" aria-haspopup="true" aria-expanded="false">
+                                        Categories
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownCategories">
+
+                                        @foreach (Category category in categories)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = category.Name, keyWord = ViewBag.KeyWord, platform = ViewBag.platform })">@category.Name</a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="dropdown-submenu">
+                                    <a class="btn dropdown-toggle dropdown-item w-100" data-toggle="dropdown" id="dropdownPlatform" aria-haspopup="true" aria-expanded="false">
+                                        Platform
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownPlatform">
+
+                                        @foreach (string platform in platforms)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = platform })">@platform</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="orderDropdown" class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                OrderBy
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Price in decreasing order</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, orderBy = "increasing", category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Price in increasing order</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, orderBy = "validate", category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Only available product</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+
+                    <div class="col-6">
+                        <div id="filterDrop" class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filter
+                            </button>
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownFilter">
+                                <div class="dropdown-submenu">
+                                    <a class="btn dropdown-toggle dropdown-item" data-toggle="dropdown" id="dropdownCategories" aria-haspopup="true" aria-expanded="false">
+                                        Categories
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownCategories">
+                                        @foreach (Category category in categories)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = category.Name, keyWord = ViewBag.KeyWord, platform = ViewBag.platform })">@category.Name</a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="dropdown-submenu">
+                                    <a class="btn dropdown-toggle dropdown-item" data-toggle="dropdown" id="dropdownPlatform" aria-haspopup="true" aria-expanded="false">
+                                        Platform
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownPlatform">
+                                        @foreach (string platform in platforms)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = platform })">@platform</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="orderDropdown" class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                OrderBy
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Price in decreasing order</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, orderBy = "increasing", category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Price in increasing order</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { page = 1, orderBy = "validate", category = ViewBag.Category, keyWord = ViewBag.KeyWord, platform = ViewBag.Platform })">Only available product</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-lg-6 col-md-6 col-12">
+            <form id="formSearchProduct" action="@Url.Action("Index", "Home")" class="mr-auto">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search product" name="keyWord">
+                    @if (ViewBag.Platform != null)
+                    {
+                        <input type="text" class="form-control hideInputFile" name="platform" value="@ViewBag.Platform" />
+                    }
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row filterRow">
+        <div class="col-12">
+            <div class="row">
+
+               
+                
+                    <div class="col-lg-1 col-md-1 col-sm-3 col-3 paddingFilter @(ViewBag.Category == null && ViewBag.Platform == null ? "hiddenLabel" : "")" >
+                        
+                        <div class="row">
+                            <div class="col-12 text-white">Filter:</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-9 col-9">
+                        <div class="row">
+                           
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 paddingFilter @(ViewBag.Category == null ? "hiddenLabel" : "")">
+                                    <div class="row filterList">
+                                        <div class="col-9 text-center dots">
+                                            @ViewBag.Category
+                                        </div>
+                                        <div class="col-3">
+                                            <a class="fa fa-remove ml-auto" href="@Url.Action("Index",new { orderBy = ViewBag.OrderBy, platform = ViewBag.Platform,category=""})"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+                           
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 paddingFilter @(ViewBag.Platform == null ? "hiddenLabel" : "")">
+                                    <div class="row filterList">
+                                        <div class="col-9 text-center dots">
+                                            @ViewBag.Platform
+                                        </div>
+                                        <div class="col-3">
+                                            <a class="fa fa-remove mr-auto" href="@Url.Action("Index","Home",new { orderBy = ViewBag.OrderBy, category=ViewBag.Category})"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                           
+                        </div>
+                    </div>
+                
+
+
+
+
+               
+            <div class="col-lg-5 col-md-5 col-12 @(ViewBag.KeyWord == null ? "hiddenLabel" : "")">
+                <div class="row">
+                    <div class="col-md-5 col-lg-3 col-sm-3 col-3 text-white">Search :</div>
+                    <div class="col-lg-9 col-md-6 col-sm-5 col-9 paddingFilter">
+                        <div class="row filterList">
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-9 text-center dots">
+                                @ViewBag.KeyWord
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-3">
+                                <a class="fa fa-remove mr-auto" href="@Url.Action("Index","Home",new { orderBy = ViewBag.OrderBy, category=ViewBag.Category,platform = ViewBag.Platform})"></a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+                        
+                       
+                    
+                </div>
+        </div>
+    </div>
+    <div class="row myForm backWhite">
+
+        @{int k = 1;}
+        @if (Model.Count() > 0)
+        {
+            foreach (ProductE p in Model)
+            {
+                if (p.Validate)
+                {
+                    <div class=" col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 customCard text-center">
+                        <div class="card align-items-center">
+                            <a href="@Url.Action("DetailsProduct", new { Id = p.Id })">
+                                <img src="~/Content/Images/@p.Id/@Path.GetFileName(p.Image1_string)" class="card-img-top" alt="@p.Name" title="@p.Name">
+                            </a>
+                            <div class="card-body">
+                                <div class="flex-card">
+                                    <h5 class="card-title">@p.Name</h5>
+                                    <p id="description-@k" class="card-text card-description">@p.Description</p>
+                                    <p class="card-text">Category: @p.Category</p>
+                                    <p class="card-text">Price: @p.Price €</p>
+
+                                </div>
+                                <div class="card-bottom">
+                                    @if (p.Quantity > 0)
+                                    {
+                                        if (Session["name"] != null && Session["surname"] != null)
+                                        {
+                                            @Ajax.ActionLink(
+                                                    "Add to Cart",
+                                                    "AddCartElement",
+                                                    "Cart",
+                                                    new { id = p.Id, quantity = 1, isHomeCart = false },
+                                                    new AjaxOptions
+                                                    {
+                                                        UpdateTargetId = "navbarListCartElement",
+                                                        InsertionMode = InsertionMode.Replace,
+                                                        OnComplete = "onCompleteAddCart",
+                                                        HttpMethod = "POST"
+                                                    },
+                                                    new { @class = "btn btn-primary", })
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-primary" href="@Url.Action("LoginPage","Account")">Add to Cart</a>
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        <p class="text-danger">Not Available</p>
+                                    }
+                                    <div id="buttonModifyProduct" class="row w-100">
+                                        @if (Session["role"] != null && (string)Session["role"] == "admin")
+                                        {
+
+                                            <div class="col-xl-6 col-lg-12 col-md-12 buttonProduct">
+                                                <a id="deleteProduct" class="btn btn-danger text-white w-100" onclick="clickDeleteProduct(this,@p.Id)" href="@Url.Action("DeleteProduct", new { id = p.Id })" title="Delete Product"><i class="fa fa-trash"></i></a>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-12 col-md-12 buttonProduct">
+                                                <a id="modifyProduct" class="btn btn-primary text-white w-100" href="@Url.Action("EditProduct",new { id = p.Id })" title="Edit Product"><i class="fa fa-edit"></i></a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    k++;
+                }
+            }
+
+            <div class="col-md-12 col-sm-12 col-12 d-none d-sm-block">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.PlatForm})" title="Previous"><<</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#"><<</a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= ViewBag.PageCount; i++)
+                        {
+                            if (i == ViewBag.CurrentPage)
+                            {
+                                <li class="page-item active" data-page="@i"><a class="page-link" href="@Url.Action("Index", new { page = i, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.Platform })" title="Page @i">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item" data-page="@i"><a class="page-link" href="@Url.Action("Index", new { page = i, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.Platform })" title="Page @i">@i</a></li>
+                            }
+                        }
+                        @if (ViewBag.CurrentPage == ViewBag.PageCount)
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">>></a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.Platform})" title="Next">>></a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-12 d-block d-sm-none">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item mr-2">
+                            <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.Platform})" title="Previous"><<</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled mr-2">
+                            <a class="page-link" href="#"><<</a>
+                        </li>
+                    }
+                    <li class="page-item text-white my-auto">
+                        @ViewBag.CurrentPage / @ViewBag.PageCount
+                    </li>
+                    @if (ViewBag.CurrentPage == ViewBag.PageCount)
+                    {
+                        <li class="page-item disabled ml-2">
+                            <a class="page-link" href="#">>></a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item ml-2">
+                            <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, category = ViewBag.Category, keyWord = ViewBag.KeyWord, orderBy = ViewBag.OrderBy, platform = ViewBag.Platform})" title="Next">>></a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+            <div class="col-12 text-center mb-1 text-black">@ViewBag.NumPage results</div>
+        }
+        else
+        {
+            if (ViewBag.Category != null || ViewBag.KeyWord != null || ViewBag.OrderBy != null)
+            {
+                <div class="col-12 text-center">
+                    <h1 class="mt-5">Your search has produced : no results</h1>
+                    <p class="mt-5 mb-5"><a href="@Url.Action("Index", new { page = 1 })">Click here for the complete product list</a></p>
+                </div>
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <h1 class="mt-5 mb-5"> Product's list is empty</h1>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+@{ string idSpan = "empty";}
+@if (ViewBag.Message != null)
+{
+    idSpan = ViewBag.Message;
+}
+<span id=@idSpan></span>
+<span id="completeAddCart" style="display:none"></span>
+<script>
+    var totalNumPage = @ViewBag.PageCount;
+    var currentPage = @ViewBag.CurrentPage;
+</script>
+@section Scripts{
+    <script src="~/Scripts/homeScript.js"></script>
+}
+@if (Session["name"] != null && Session["surname"] != null)
+{
+    @section NavbarCart{
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle cursorPointer" id="navbarShoppingCart" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-shopping-cart"></i><span class="badge">3</span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarShoppingCart" id="navbarListCartElement">
+                @Html.Action("GetCart", "Cart")
+            </div>
+        </li>
+    }
+}

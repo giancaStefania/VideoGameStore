@@ -1,0 +1,18 @@
+﻿@model List<CG.MVC5.Stefania.Models.Category>
+
+@foreach (var cat in Model)
+    {
+        if (ViewBag.category != null && (string)ViewBag.category == cat.Name)
+        {
+            <option value="@cat.Name" selected>@cat.Name</option>
+
+        }
+        else
+        {
+            <option value="@cat.Name">@cat.Name</option>
+        }
+    }
+
+
+
+

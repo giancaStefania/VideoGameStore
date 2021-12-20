@@ -1,0 +1,25 @@
+﻿@model List<String>
+
+@if (ViewBag.pricipal)
+{
+    if (ViewBag.platform != null)
+    {
+        <option value="Not Selected">Not Selected</option>
+    }
+    else
+    {
+        <option value="Not Selected" selected>Not Selected</option>
+    }
+}
+@foreach (string platform in Model)
+{
+    if (ViewBag.platform != null && (string)ViewBag.platform == platform)
+    {
+        <option value="@platform" selected>@platform</option>
+
+    }
+    else
+    {
+        <option value="@platform">@platform</option>
+    }
+}

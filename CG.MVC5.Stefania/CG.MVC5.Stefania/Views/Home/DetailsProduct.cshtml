@@ -1,0 +1,154 @@
+﻿@using CG.MVC5.Stefania.Models
+@model  ProductE
+
+
+<div class="container align-content-center">
+    
+    <div class="row titleOfPage">
+        <div class="col-12 my-auto">
+            <a class="btn btn-outline-primary " href="@ViewBag.LastAction"><span class="fa fa-arrow-left my-auto"></span></a>
+        Product's Details</div>
+    </div>
+    <div id="rowDetails" class="row myForm">
+        <div class="col-lg-6 carouselPadding">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    @if (Model.Image2_string != null)
+                    {
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                    }
+                    @if (Model.Image3_string != null)
+                    {
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="parent d-flex justify-content-center">
+                            <img src="/Content/Images/@Model.Id/@Model.Image1_string" alt="Slide1">
+                        </div>
+                    </div>
+                    @if (Model.Image2_string != null)
+                    {
+                        <div class="carousel-item">
+                            <div class="parent d-flex justify-content-center">
+                                <img src="/Content/Images/@Model.Id/@Model.Image2_string" alt="Slide1">
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Image3_string != null)
+                    {
+                        <div class="carousel-item">
+                            <div class="parent d-flex justify-content-center">
+                                <img src="/Content/Images/@Model.Id/@Model.Image3_string" alt="Slide1">
+                            </div>
+                        </div>
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+        </div>
+        <div class="col-lg-6 text-black justify-content-center align-content-center carouselPadding">
+            <div class="col-12 text-center">
+                <h1>@Model.Name</h1>
+            </div>
+            <div class="col-12">
+                <h3>Description:</h3>
+            </div>
+            <div class="col-12">
+                <p>@Model.Description</p>
+            </div>
+            <div class="col-12">
+                <h4>Category:</h4>
+            </div>
+            <div class="col-12">
+                <p>@Model.Category</p>
+            </div>
+            <div class="col-12">
+                <h4>Price:</h4>
+            </div>
+            <div class="col-12">
+                <p>@Model.Price €</p>
+            </div>
+            <div class="col-12">
+                <h4>Available quantity:</h4>
+            </div>
+            <div class="col-12">
+                <p>@Model.Quantity</p>
+            </div>
+            @if (Model.Quantity > 0)
+            {
+                
+                if (Session["name"] != null && Session["surname"] != null)
+                {
+                    using (Ajax.BeginForm("AddCartElement", "Cart",
+                        new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.Replace,
+                            HttpMethod = "POST",
+                            OnComplete = "onCompleteAddCart",
+                            UpdateTargetId = "navbarListCartElement"
+                        }))
+
+                    {
+                        
+                            <div class="col-12">
+                                <h4><label for="quantityDetails">Select quantity:</label></h4>
+                            </div>
+                            <div class="col-12">
+                                <input id="quantityDetails" type="number" class="form-control" min="1" max="@Model.Quantity" step="1" value="1" name="quantity" />
+                                <input type="number" class="hiddenLabel" value="@Model.Id" name="id" />
+                            </div>
+                            <div class="col-12 text-left mt-2">
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                       
+                    }
+                 }
+                else
+                {
+                    
+                        <div class="col-12">
+                            <h4><label for="quantityDetails">Select quantity:</label></h4>
+                        </div>
+                        <div class="col-12">
+                            <input id="quantityDetails" type="number" class="form-control" min="1" max="@Model.Quantity" step="1" value="1" name="quantity" />
+                        </div>
+                        <div class="col-12 text-left mt-2">
+                            <a href="@Url.Action("LoginPage", "Account")" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    
+                }
+                
+            }
+            else
+            {
+                <h4 class="text-danger">Not Available</h4>
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/detailScript.js"></script>
+}
+@if (Session["name"] != null && Session["surname"] != null)
+{
+    @section NavbarCart{
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle cursorPointer" id="navbarShoppingCart" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-shopping-cart"></i><span class="badge">3</span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarShoppingCart" id="navbarListCartElement">
+                @Html.Action("GetCart", "Cart")
+            </div>
+        </li>
+    }
+}

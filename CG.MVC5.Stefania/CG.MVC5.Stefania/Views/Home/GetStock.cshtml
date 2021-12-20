@@ -1,0 +1,14 @@
+﻿@model List<String>
+
+@foreach (string stock in Model)
+    {
+        if (ViewBag.stock != null && (string)ViewBag.stock == stock)
+        {
+            <option value="@stock" selected>@stock</option>
+
+        }
+        else
+        {
+            <option value="@stock">@stock</option>
+        }
+    }

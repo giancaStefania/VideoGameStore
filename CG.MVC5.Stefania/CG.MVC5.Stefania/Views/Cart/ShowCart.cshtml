@@ -1,0 +1,22 @@
+﻿@using CG.MVC5.Stefania.Models
+@model ShoppingCart
+
+@{
+    ViewBag.Title = "ShowCart";
+}
+    <div class="container">
+        <p class="titleOfPage">My Shopping Cart</p>
+        <div id="rowShoppingCart" class="row myForm ">
+            @Html.Partial("_RefreshHomeCart", Model)
+        </div>
+    </div>
+  
+@*<div class="container ">
+    <p class="titleOfPage">My Shopping Cart</p>
+    <div id="rowShoppingCart" class="row myForm h-100">
+        @Html.Partial("_RefreshHomeCart", Model)
+    </div>
+</div>*@
+@section Scripts{
+    <script src="~/Scripts/cartScript.js"></script>
+}

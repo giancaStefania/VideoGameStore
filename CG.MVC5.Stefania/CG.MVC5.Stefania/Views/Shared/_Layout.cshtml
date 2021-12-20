@@ -1,0 +1,77 @@
+﻿@using CG.MVC5.Stefania.Models
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/Content/alertifyjs/alertify.min.css" />
+    <link rel="stylesheet" href="~/Content/alertifyjs/themes/default.min.css" />
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+
+</head>
+<body class="h-100 @(ViewBag.Background != null ? "backgroundLogin" : "bodyBackground")">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand">VideoGameStore</a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link @(ViewBag.Title == "Index" ? "active" : "")" href="@Url.Action("Index","Home",new { page = 1 })">Home Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewBag.Title == "Order" ? "active" : "")" href="@(Session["name"] != null ? Url.Action("Index","Order") : Url.Action("LoginPage","Account"))">My Order</a>
+                </li>
+                <li class="nav-item dropdown">
+
+                    @if (Session["name"] != null && Session["surname"] != null)
+                    {
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Session["name"].ToString() @Session["surname"].ToString()
+                        </a>
+                        <div class="dropdown-menu ml-auto" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Logout", "Account")">Logout</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="nav-link  @(ViewBag.Title == "Login" ? "active" : "")" href="@Url.Action("LoginPage", "Account")">Login</a>
+                    }
+                </li>
+               
+                    @RenderSection("NavbarCart", false)
+                
+            </ul>
+        </div>
+    </nav>
+    @*<div class="container-fluid fullScreen">
+        <div class="row h-100">
+            <div class="col-xl-1 background-border"></div>
+            <div class="col-xl-10 col-lg-12 col-12 background-center">
+    *@    
+                @RenderBody()
+        
+      @*      </div>
+            <div class="col-xl-1 background-border"></div>
+
+        </div>*@
+        
+        @RenderSection("ButtonToTop", false)
+    
+   
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/alertify.min.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

@@ -1,0 +1,66 @@
+﻿@using CG.MVC5.Stefania.Models
+@model ShoppingCart
+@if (Model.Products.Count > 0)
+{
+    foreach (ProductE product in Model.Products)
+    {
+    <div class="dropdown-item-text mr-auto" data-product="product">
+        <div class="row">
+        <div class="col-sm-6 col-4 dots">@product.Name </div>  
+        <div class="col-sm-3 col-4 textOfCart">
+            @product.Price € 
+        </div>
+        <div class="col-sm-3 col-4 textOfCart">
+            @Ajax.ActionLink(
+                           " ",
+                           "IncreaseDecreaseProductFromCart",
+                           "Cart",
+                           new { id = product.Id, quantity = -1 , isHomeCart = false},
+                           new AjaxOptions
+                           {
+                               UpdateTargetId = "navbarListCartElement",
+                               InsertionMode = InsertionMode.Replace,
+                               OnComplete = "onCompleteDeleteCart",
+                               HttpMethod = "POST"
+                           },
+                           new { @class = "fa fa-minus-square" })
+            @product.Quantity
+            @Ajax.ActionLink(
+                           " ",
+                           "IncreaseDecreaseProductFromCart",
+                           "Cart",
+                           new { id = product.Id, quantity = 1, isHomeCart = false },
+                           new AjaxOptions
+                           {
+                               UpdateTargetId = "navbarListCartElement",
+                               InsertionMode = InsertionMode.Replace,
+                               OnComplete ="onCompleteAddCart",
+                               HttpMethod = "POST"
+                           },
+                           new { @class = "fa fa-plus-square" })
+            @Ajax.ActionLink(
+                " ",
+                "DeleteProductFromCart",
+                "Cart",
+                new { id = product.Id , isHomeCart = false},
+                new AjaxOptions
+                {
+                    UpdateTargetId = "navbarListCartElement",
+                    InsertionMode = InsertionMode.Replace,
+                    OnComplete = "onCompleteDeleteCart",
+                    HttpMethod = "POST"
+                },
+                new { @class = "fa fa-close" })
+        </div>
+        </div>
+    </div>
+    }
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-item-text mr-auto">Total : @Model.Total € </div>
+    <a class="dropdown-item ml-auto" href="@Url.Action("ShowCart","Cart")">Go To Cart</a>
+}
+else
+{
+    <div class="dropdown-item-text mr-auto">No Items Selected</div>
+}
+
